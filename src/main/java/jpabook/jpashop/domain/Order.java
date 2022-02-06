@@ -18,7 +18,7 @@ public class Order {
     @Column(name="order_id")
     private Long id;
 
-    @ManyToOne   // 주문 1개당, member 1명, member 1명당, 주문여러개
+    @ManyToOne(fetch=FetchType.LAZY)   // 주문 1개당, member 1명, member 1명당, 주문여러개 , 즉시로딩 x, 지연로딩하도록 해야함.
     @JoinColumn(name="member_id")  // 조인을 member_id로 한다.
     private Member member;
 
