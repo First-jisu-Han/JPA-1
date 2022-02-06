@@ -27,7 +27,7 @@ public class Order {
     private List<OrderItem> orderItems=new ArrayList<>();
 
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="delivery_id")  // 상속관계의 주인 : Order로 설정했다.
     private Delivery delivery;
 
