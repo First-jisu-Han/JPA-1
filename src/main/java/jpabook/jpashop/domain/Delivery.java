@@ -3,6 +3,7 @@ package jpabook.jpashop.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
 
 import javax.persistence.*;
 
@@ -10,6 +11,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class Delivery {
+
+    @Id @GeneratedValue
+    @Column(name="delivery_id")
+    private Long id;
 
     @OneToOne(mappedBy = "delivery") // FK를 두 클래스중 어디에 선언해도 무관 but 많이 찾는곳 선언 Order에 선언, delivery 인스턴스 이름으로 매핑됨
     private Order order;             // 특정주문 1개당 1개의 특정배송을 갖는다,
