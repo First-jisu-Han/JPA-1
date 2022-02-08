@@ -22,17 +22,34 @@ public class Order {
     @JoinColumn(name="member_id")  // 조인을 member_id로 한다.
     private Member member;
 
-
-    @OneToMany(mappedBy = "order")  // 주문 상품 1개당 주문 하나에 종속된다. + OrderItem클래스의 필드인 order에 매핑된다.
+    // 주문 상품 1개당 주문 하나에 종속된다. + OrderItem클래스의 필드인 order에 매핑된다.
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL) // cascade 를 통해서 컬렉션안의 값들을 일일이 persist안해도 자동으로 전파해준다.
     private List<OrderItem> orderItems=new ArrayList<>();
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL) // cascade를 통해서 delivery 값들을 모두 자동 전파
     @JoinColumn(name="delivery_id")  // 상속관계의 주인 : Order로 설정했다.
     private Delivery delivery;
 
-    private LocalDateTime orderDate;       // 주문시간
+    private LocalDateTime orderDate;     // 주문시간
 
     @Enumerated(EnumType.STRING)     // Enum타입에 무조건 붙여주기 - 디폴트는 ORIGINAL로 숫자이다.
     private OrderStatus status;    // 주문 상태 [ORDER : 주문완료 , CANCEL: 주문취소]
+
+
+    /* 연관 관계 메서드 - 한 코드로 양쪽 세팅 완료 */
+    public void setMember(Member member){
+        this.member=member;
+        member.getOrders().add(this);
+    }
+
+    public void addOrderItem(OrderItem orderItem){
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+    public void setDelivery(Delivery delivery){
+        this.delivery=delivery;
+        delivery.setOrder(this);
+    }
 }
+
