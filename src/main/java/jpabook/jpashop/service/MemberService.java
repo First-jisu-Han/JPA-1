@@ -22,7 +22,7 @@ public class MemberService {
 
     // 회원 가입
     @Transactional    // 클래스 전체가 readOnly 적용되어있기때문에 데이터변경되는 트랜잭션은 따로 @Transactional 처리
-    public Long Join(Member member){
+    public Long join(Member member){
         validateDuplicateMember(member); // 중복회원 검증(중복되는 회원이 등록되는것을 막음)
         memberRepository.save(member);
         return member.getId();
