@@ -1,5 +1,6 @@
 package jpabook.jpashop.service;
 
+import jdk.jshell.spi.ExecutionControlProvider;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;
 import org.junit.Test;
@@ -26,33 +27,25 @@ public class MemberServiceTest {
 
     @Test
     @Rollback(value = false)
-    public void 회원가입() throws Exception{
+    public void 회원가입() throws Exception {
         // given
-        Member member=new Member();
+        Member member = new Member();
         member.setName("한지수");
         // when
-        Long savedId=memberService.join(member);
+        Long savedId = memberService.join(member);
         // then
-        Assertions.assertEquals(member,memberRepository.findOne(savedId));
-
-
+        Assertions.assertEquals(member, memberRepository.findOne(savedId));
     }
 
-    @Test
-    public void 중복_회원_예외(){
+    @Test(expected = IllegalStateException.class)
+    public void 중복_회원_예외() {
         //given
-        Member memberA=new Member();
+        Member memberA = new Member();
         memberA.setName("한지수");
-        Member memberB=new Member();
+        Member memberB = new Member();
         memberB.setName("한지수");
         //when
         memberService.join(memberA);
-        try{
-            memberService.join(memberB);
-        } catch(IllegalStateException e){
-            return;
-        }
-        //then
-        fail("예외가 발생해야한다");
+        memberService.join(memberB);
     }
 }
