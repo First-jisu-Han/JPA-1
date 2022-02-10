@@ -47,9 +47,51 @@ public class Order {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
+
     public void setDelivery(Delivery delivery){
         this.delivery=delivery;
         delivery.setOrder(this);
+    }
+
+    /* 생성 메서드 */  // 주문생성하는부분 (직접 주문을 누르면~ )  생성에 변경이 생기면 이부분만 수정하면됨.
+
+    public static Order createOrder(Member member,Delivery delivery,OrderItem... orderItems){
+        Order order=new Order();
+        order.setMember(member);
+        order.setDelivery(delivery);
+        for(OrderItem orderItem : orderItems){
+            order.addOrderItem(orderItem);
+        }
+        order.setStatus(OrderStatus.ORDER); // 처음상태를 주문완료 상태로 강제로 세팅
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+
+    // 비즈니스 로직 //
+    /**
+     * 주문취소
+     */
+    public void cancel(){
+        if(delivery.getStatus()==DeliveryStatus.COMP){
+            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
+        }
+        this.setStatus(OrderStatus.CANCEL);  // 주문상태를 취소상태로설정
+        for(OrderItem orderItem : orderItems){
+            orderItem.cancel();   // 주문취소시 수량 원복
+        }
+    }
+
+    // 조회 로직 //
+
+    /**
+     * 전체 주문가격 조회
+     */
+    public int getTotalPrice(){
+        int totalPrice=0;
+        for(OrderItem orderItem : orderItems){
+            totalPrice+=orderItem.getTotalPrice();
+        }
+        return totalPrice;
     }
 }
 
