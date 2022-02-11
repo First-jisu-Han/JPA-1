@@ -8,7 +8,8 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-public class OrderItem {
+public class
+OrderItem {
 
 
     @Id @GeneratedValue
@@ -26,6 +27,10 @@ public class OrderItem {
     private int orderPrice;  // 주문 당시의 가격
 
     private int count;       // 주문 당시의 수량
+
+    protected OrderItem(){
+        // protected로 막아서 생성한 후에 값들을 일일이 대입하지않도록, 하나로 묶어서 Order에서 관리하도록 하기 위함이다.
+    }
 
     // 생성메서드
     public static OrderItem createOrderItem(Item item,int orderPrice, int count){

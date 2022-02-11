@@ -67,6 +67,10 @@ public class Order {
         return order;
     }
 
+    protected Order (){
+        // Order를 임의로 생성해서 안에 값을 조작하는 것을 방지한다. 유지보수가 어려워지기 때문에
+    }
+
     // 비즈니스 로직 //
     /**
      * 주문취소
