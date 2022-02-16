@@ -26,15 +26,14 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-
     // 변경 감지기능
     @Transactional
-    public void updateItem(Long itemId, Book bookParam){
+    public void updateItem(Long itemId, String name, int price, int stockQuantity){
         Item findItem=itemRepository.findOne(itemId);    // 영속 상태이다. (JPA가 관리) + setter로 설계하기보단 추가적으로 메서드로 만들어값을 넣도록 설계해야한다.
-        findItem.setPrice(bookParam.getPrice());
-        findItem.setName(bookParam.getName());
-        findItem.setStockQuantity(bookParam.getStockQuantity());
-    }
+        findItem.setPrice(price);
+        findItem.setName(name);
+        findItem.setStockQuantity(stockQuantity);
+    } // 메서드 호출이후 변경사항에 대해서 UPDATE SQL을 날린다.
 
     public Item findOne(Long itemId){
         return itemRepository.findOne(itemId);
