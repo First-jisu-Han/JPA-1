@@ -4,6 +4,7 @@ package jpabook.jpashop.controller;
 import lombok.Getter;
 import lombok.Setter;
 
+// DTO
 @Getter @Setter
 public class BookForm {
     private Long id;
